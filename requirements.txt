@@ -1,14 +1,29 @@
-torch
-transformers
-accelerate
-bitsandbytes
+# --- Core Deep Learning & Models ---
+torch>=2.0.0
+transformers==4.42.4
+accelerate>=0.30.0
+bitsandbytes>=0.43.0
+optimum
+flash-attn
+
+# --- Audio Processing (STT/TTS) ---
+openai-whisper
+soundfile
+# Note: KittenTTS must be installed via wheel URL:
+# https://github.com/KittenML/KittenTTS/releases/download/0.1/kittentts-0.1.0-py3-none-any.whl
+
+# --- RAG & Vector Database ---
 sentence-transformers
 langchain
 langchain-community
 langchain-text-splitters
 faiss-gpu-cu12
-openai-whisper
+
+# --- Interface & API ---
 gradio
-soundfile
-numpy
-# For KittenTTS install directly from GitHub as indicated in the README
+groq
+python-dotenv
+
+# --- Utilities & Compatibility ---
+numpy<2.0.0
+numba
