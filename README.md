@@ -1,5 +1,9 @@
 ## VoxNode - Your Open-Source Voice AI Agent
 
+![GitHub Release](https://img.shields.io/github/v/release/DOrtenzio/VoxNode_Pro?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/DOrtenzio/VoxNode_Pro?style=flat-square)
+![GitHub Stars](https://img.shields.io/github/stars/DOrtenzio/VoxNode_Pro?style=flat-square)
+
 **Project Status:** In_Development | **License:** MIT | **Version:** 0.1
 
 ### 🚀 Overview
