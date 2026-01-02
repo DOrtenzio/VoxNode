@@ -1,0 +1,14 @@
+torch
+transformers
+accelerate
+bitsandbytes
+sentence-transformers
+langchain
+langchain-community
+langchain-text-splitters
+faiss-gpu-cu12
+openai-whisper
+gradio
+soundfile
+numpy
+# For KittenTTS install directly from GitHub as indicated in the README
