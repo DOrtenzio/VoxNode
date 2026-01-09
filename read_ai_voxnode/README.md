@@ -31,7 +31,7 @@ The application operates on a dual-layer stack:
 #### 1. Clone and Prepare Backend
 
 ```bash
-git clone https://github.com/your-repo/voicereader-ai.git
+git clone https://github.com/DOrtenzio/VoxNode_Pro.git
 cd voicereader-ai/backend
 
 # Create virtual environment
