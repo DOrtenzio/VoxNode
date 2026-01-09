@@ -3,259 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assistente Lettura Intelligente</title>
+    <title>VoiceReader AI - Assistente Studio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar Moderna -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <div class="logo-container">
-                    <i class="fas fa-book-reader logo-icon"></i>
+                    <i class="fas fa-brain logo-icon"></i>
                     <span class="logo-text">VoiceReader AI</span>
                 </div>
             </a>
             <div class="navbar-actions">
-                <div class="btn-group language-switch">
-                    <button class="btn btn-sm btn-outline-light active" onclick="setLanguage('it')">IT</button>
-                    <button class="btn btn-sm btn-outline-light" onclick="setLanguage('en')">EN</button>
+                <div class="btn-group language-switch me-3">
+                    <button class="btn btn-sm btn-outline-light active" id="langIt" onclick="setLanguage('it')">IT</button>
+                    <button class="btn btn-sm btn-outline-light" id="langEn" onclick="setLanguage('en')">EN</button>
                 </div>
-                <button class="btn btn-notebook" onclick="showNotebookManager()">
-                    <i class="fas fa-book"></i>
-                    <span class="btn-text">Quaderni</span>
+                <button class="btn btn-notebook" onclick="NotebookManager.showModal()">
+                    <i class="fas fa-book"></i> <span class="d-none d-sm-inline">Quaderni</span>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="hero-title">Trasforma la tua lettura in conoscenza</h1>
-                    <p class="hero-subtitle">Leggi ad alta voce, ottieni trascrizioni in tempo reale e interagisci con l'IA per riassunti e spiegazioni</p>
-                    <button class="btn btn-hero" onclick="startDemo()">
-                        <i class="fas fa-play-circle me-2"></i>Prova Demo
-                    </button>
-                </div>
-                <div class="col-lg-6">
-                    <div class="hero-illustration">
-                        <div class="pulse-ring"></div>
-                        <div class="pulse-ring delay-1"></div>
-                        <div class="pulse-ring delay-2"></div>
-                        <i class="fas fa-microphone hero-mic"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container main-container">
+    <div class="container mt-4">
         <div class="row">
-            <!-- Left Column - Voice Control -->
-            <div class="col-lg-8">
-                <!-- Voice Control Card -->
-                <div class="card glass-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3><i class="fas fa-microphone-alt me-2"></i>Controllo Vocale</h3>
-                            <div class="status-indicator">
-                                <span class="status-dot"></span>
-                                <span id="statusText" class="status-text">Pronto</span>
-                            </div>
+            <div class="col-lg-7">
+                <div class="card glass-card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-microphone-lines me-2"></i>Input Vocale</h5>
+                        <div class="status-indicator">
+                            <span class="status-dot" id="statusDot"></span>
+                            <span id="statusText" class="status-text">Pronto</span>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="voice-control-panel">
-                            <div class="voice-visualizer" id="voiceVisualizer">
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                            </div>
-                            
-                            <div class="control-buttons">
-                                <button class="btn-control btn-record" onclick="startListening()" id="startBtn">
-                                    <div class="btn-icon">
-                                        <i class="fas fa-circle"></i>
-                                    </div>
-                                    <span class="btn-label">Inizia</span>
-                                </button>
-                                
-                                <button class="btn-control btn-pause" onclick="pauseListening()" id="pauseBtn" disabled>
-                                    <div class="btn-icon">
-                                        <i class="fas fa-pause"></i>
-                                    </div>
-                                    <span class="btn-label">Pausa</span>
-                                </button>
-                                
-                                <button class="btn-control btn-stop" onclick="stopListening()" id="stopBtn" disabled>
-                                    <div class="btn-icon">
-                                        <i class="fas fa-stop"></i>
-                                    </div>
-                                    <span class="btn-label">Stop</span>
-                                </button>
-                            </div>
-                            
-                            <div class="command-hints">
-                                <div class="hint-item">
-                                    <span class="hint-badge pause">PAUSA</span>
-                                    <span class="hint-text">Mette in pausa e scrive il testo</span>
-                                </div>
-                                <div class="hint-item">
-                                    <span class="hint-badge stop">STOP</span>
-                                    <span class="hint-text">Termina e salva la lettura</span>
-                                </div>
-                                <div class="hint-item">
-                                    <span class="hint-badge resume">CONTINUA</span>
-                                    <span class="hint-text">Riprende l'ascolto</span>
-                                </div>
-                            </div>
+                    <div class="card-body text-center">
+                        <div class="voice-visualizer mb-4" id="voiceVisualizer">
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            <div class="bar"></div><div class="bar"></div>
+                        </div>
+                        
+                        <div class="control-buttons d-flex justify-content-center gap-3">
+                            <button class="btn-control btn-record" onclick="startListening()" id="startBtn">
+                                <i class="fas fa-play me-2"></i><span>Leggi</span>
+                            </button>
+                            <button class="btn-control btn-pause" onclick="pauseListening()" id="pauseBtn" disabled>
+                                <i class="fas fa-pause me-2"></i><span>Pausa</span>
+                            </button>
+                            <button class="btn-control btn-stop" onclick="stopListening()" id="stopBtn" disabled>
+                                <i class="fas fa-stop me-2"></i><span>Stop</span>
+                            </button>
+                        </div>
+                        <div class="mt-2 text-muted small">
+                            Motore Trascrizione: <strong>Whisper Local (Server Python)</strong>
                         </div>
                     </div>
                 </div>
 
-                <!-- Transcript Card -->
-                <div class="card glass-card mt-4">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3><i class="fas fa-scroll me-2"></i>Testo in Tempo Reale</h3>
-                            <div class="stats">
-                                <span class="stat-badge" id="wordCount">0 parole</span>
-                                <span class="stat-badge" id="confidence">100% accuratezza</span>
-                            </div>
-                        </div>
+                <div class="card glass-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-align-left me-2"></i>Testo Rilevato</h5>
+                        <span class="badge bg-primary" id="wordCount">0 parole</span>
                     </div>
                     <div class="card-body">
-                        <div class="transcript-wrapper">
-                            <div class="transcript-container" id="transcriptContainer">
-                                <div id="transcriptText" class="transcript-text">
-                                    <div class="empty-state">
-                                        <i class="fas fa-comment-dots"></i>
-                                        <p>Inizia a leggere ad alta voce<br>Il testo apparirà qui in tempo reale</p>
-                                    </div>
-                                </div>
+                        <div id="transcriptContainer" class="transcript-box p-3 bg-light rounded shadow-sm mb-3" style="min-height: 300px; max-height: 500px; overflow-y: auto;">
+                            <div id="transcriptText" class="transcript-text">
+                                <p class="text-muted text-center mt-5">
+                                    Premi "Leggi" e inizia a leggere il tuo manuale o documento.<br>
+                                    Il testo apparirà qui automaticamente.
+                                </p>
                             </div>
-                            <div class="transcript-actions">
-                                <button class="btn-action btn-save" onclick="saveToNotebook()" id="saveBtn" disabled>
-                                    <i class="fas fa-save"></i> Salva
-                                </button>
-                                <button class="btn-action btn-clear" onclick="clearTranscript()">
-                                    <i class="fas fa-trash"></i> Pulisci
-                                </button>
-                                <button class="btn-action btn-copy" onclick="copyTranscript()">
-                                    <i class="fas fa-copy"></i> Copia
-                                </button>
-                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="copyTranscript()">
+                                <i class="fas fa-copy"></i> Copia
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="clearTranscript()">
+                                <i class="fas fa-trash"></i> Pulisci
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Column -->
-            <div class="col-lg-4">
-                <!-- AI Model Selector -->
-                <div class="card glass-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-brain me-2"></i>Modello IA</h3>
+            <div class="col-lg-5">
+                <div class="card glass-card h-100">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-robot me-2"></i>Assistente IA (LLM)</h5>
                     </div>
-                    <div class="card-body">
-                        <div class="model-selector">
-                            <div class="model-option active" onclick="selectModel('groq')">
-                                <div class="model-icon">
-                                    <i class="fas fa-bolt"></i>
-                                </div>
-                                <div class="model-info">
-                                    <h6>Groq Cloud</h6>
-                                    <small>Ultra veloce - GPT OSS 120B</small>
-                                </div>
-                                <div class="model-status">
-                                    <span class="status-online"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="model-option" onclick="selectModel('local')">
-                                <div class="model-icon">
-                                    <i class="fas fa-laptop"></i>
-                                </div>
-                                <div class="model-info">
-                                    <h6>Locale</h6>
-                                    <small>Privacy - Offline - Llama 2</small>
-                                </div>
-                                <div class="model-status">
-                                    <span class="status-offline"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="model-option" onclick="selectModel('openai')">
-                                <div class="model-icon">
-                                    <i class="fab fa-openai"></i>
-                                </div>
-                                <div class="model-info">
-                                    <h6>OpenAI</h6>
-                                    <small>GPT-4 - Più accurato</small>
-                                </div>
-                                <div class="model-status">
-                                    <span class="status-online"></span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-body d-flex flex-column">
                         
-                        <div class="api-config" id="apiConfig">
-                            <input type="text" class="form-control api-key-input" id="apiKey" 
-                                   placeholder="Inserisci API Key per Groq">
-                            <button class="btn btn-connect" onclick="connectAPI()">
-                                <i class="fas fa-plug"></i> Connetti
-                            </button>
+                        <div id="apiConfigPanel" class="mb-3 p-3 bg-dark bg-opacity-10 rounded">
+                            <label class="form-label small fw-bold">Configurazione Motore IA (Groq)</label>
+                            <div class="input-group input-group-sm">
+                                <input type="password" class="form-control" id="apiKey" placeholder="Incolla qui la tua API Key Groq">
+                                <button class="btn btn-dark" onclick="connectAPI()">Salva Key</button>
+                            </div>
+                            <small class="text-muted" style="font-size: 0.75rem;">La chiave viene salvata solo nel tuo browser.</small>
                         </div>
-                    </div>
-                </div>
 
-                <!-- AI Chat -->
-                <div class="card glass-card mt-4">
-                    <div class="card-header">
-                        <h3><i class="fas fa-robot me-2"></i>Assistente IA</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chat-container" id="chatContainer">
-                            <div class="message ai">
-                                <div class="message-avatar">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="message-content">
-                                    <div class="message-text">
-                                        Ciao! Sono il tuo assistente di lettura. Quando avrai finito di leggere, potrò aiutarti con riassunti, spiegazioni e domande sul testo.
-                                    </div>
-                                </div>
+                        <div id="chatContainer" class="chat-box flex-grow-1 mb-3 p-3 border rounded bg-white" style="overflow-y: auto; max-height: 400px;">
+                            <div class="text-center text-muted mt-4">
+                                <i class="fas fa-comments fa-2x mb-2 opacity-50"></i>
+                                <p class="small">Fai domande sul testo che hai appena letto.<br>Es: "Fammi un riassunto", "Spiega il concetto X".</p>
                             </div>
                         </div>
-                        
-                        <div class="quick-actions">
-                            <button class="btn-quick" onclick="askQuestion('Riassumi il testo')" disabled>
-                                <i class="fas fa-compress-alt"></i> Riassumi
+
+                        <div class="quick-actions d-flex flex-wrap gap-2 mb-3 justify-content-center">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill" onclick="askQuestion('Riassumi questo testo in punti chiave')" id="btnSummary" disabled>
+                                <i class="fas fa-list-ul me-1"></i> Riassumi
                             </button>
-                            <button class="btn-quick" onclick="askQuestion('Punti principali')" disabled>
-                                <i class="fas fa-key"></i> Punti Chiave
-                            </button>
-                            <button class="btn-quick" onclick="askQuestion('Spiega concetti difficili')" disabled>
-                                <i class="fas fa-lightbulb"></i> Spiega
+                            <button class="btn btn-sm btn-outline-primary rounded-pill" onclick="askQuestion('Quali sono i concetti tecnici principali?')" id="btnConcepts" disabled>
+                                <i class="fas fa-microchip me-1"></i> Concetti Tecnici
                             </button>
                         </div>
-                        
-                        <div class="chat-input-group">
-                            <input type="text" class="chat-input" id="chatInput" 
-                                   placeholder="Scrivi la tua domanda..." disabled>
-                            <button class="btn-send" id="sendBtn" onclick="sendMessage()" disabled>
+
+                        <div class="input-group">
+                            <input type="text" id="chatInput" class="form-control" placeholder="Fai una domanda sul testo..." disabled>
+                            <button class="btn btn-primary" id="sendBtn" onclick="sendMessage()" disabled>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
@@ -265,83 +135,9 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-book-reader"></i>
-                    <span>VoiceReader AI</span>
-                </div>
-                <div class="footer-links">
-                    <a href="#" class="footer-link">Privacy</a>
-                    <a href="#" class="footer-link">Termini</a>
-                    <a href="#" class="footer-link">Supporto</a>
-                </div>
-                <div class="footer-copyright">
-                    © 2026 VoxNode, Licenza MIT.
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Loader markup (usa showLoader()/hideLoader()) -->
-    <div id="globalLoader" class="loader-overlay" style="display:none;" aria-hidden="true" role="status" aria-live="polite">
-        <div class="loader-content">
-            <div class="loader-spinner" aria-hidden="true"></div>
-            <div class="loader-text">Caricamento<span class="loader-dots"><span></span><span></span><span></span></span></div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script/notebook-manager.js"></script>
     <script src="script/voxnode-integration.js"></script>
     <script src="script/app.js"></script>
-
-    <script>
-        // Configurazione semplificata
-        function selectModel(model) {
-            AppState.aiMode = model;
-            
-            document.querySelectorAll('.model-option').forEach(opt => {
-                opt.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            const apiConfig = document.getElementById('apiConfig');
-            if (apiConfig) {
-                if (model === 'groq' || model === 'openai') {
-                    apiConfig.style.display = 'block';
-                    document.getElementById('apiKey').placeholder = 
-                        model === 'groq' ? "Inserisci API Key Groq" : "Inserisci API Key OpenAI";
-                } else {
-                    apiConfig.style.display = 'none';
-                }
-            }
-            
-            const message = model === 'local' 
-                ? '✅ Modalità locale attiva (Whisper Python)' 
-                : `Modello ${model} selezionato`;
-            showNotification(message, 'info');
-        }
-        
-        function connectAPI() {
-            const apiKey = document.getElementById('apiKey').value.trim();
-            if (!apiKey) {
-                showNotification('Inserisci una API Key valida', 'warning');
-                return;
-            }
-            
-            AppState.apiConfig = {
-                type: AppState.aiMode,
-                apiKey: apiKey
-            };
-            
-            localStorage.setItem(`apiKey_${AppState.aiMode}`, apiKey);
-            showNotification(`API Key ${AppState.aiMode} salvata`, 'success');
-        }
-        
-        // Rimuovi la vecchia inizializzazione dal DOMContentLoaded
-    </script>
 </body>
 </html>
